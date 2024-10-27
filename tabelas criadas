@@ -1,0 +1,50 @@
+é assim que está minhas tabelas
+
+-- Tabela Usuario
+CREATE TABLE Usuario (
+    UsuarioID INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    SenhaHash VARCHAR(255) NOT NULL, -- Armazena o hash da senha
+    CONSTRAINT CK_Email CHECK (Email LIKE '%@%') -- Exemplo de restrição simples para validação de email
+);
+
+-- Tabela Contato
+CREATE TABLE Contato (
+    ContatoID INT PRIMARY KEY AUTO_INCREMENT,
+    UsuarioID INT NOT NULL, -- Referência ao dono do contato
+    Nome VARCHAR(100) NOT NULL,
+    NumeroWhatsApp VARCHAR(15) NOT NULL,
+    FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID) ON DELETE CASCADE
+);
+
+-- Tabela Mensagem
+CREATE TABLE Mensagem (
+    MensagemID INT PRIMARY KEY AUTO_INCREMENT,
+    RemetenteID INT NOT NULL, -- Usuário que envia a mensagem
+    DestinatarioID INT NOT NULL, -- Usuário que recebe a mensagem
+    Conteudo TEXT NOT NULL,
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    Status ENUM('Enviado', 'Entregue', 'Lido'),
+    FOREIGN KEY (RemetenteID) REFERENCES Usuario(UsuarioID) ON DELETE CASCADE,
+    FOREIGN KEY (DestinatarioID) REFERENCES Usuario(UsuarioID) ON DELETE CASCADE
+);
+
+-- Tabela Usuario_Contato (Relacionamento entre Usuario e Contato)
+CREATE TABLE Usuario_Contato (
+    UsuarioID INT NOT NULL,
+    ContatoID INT NOT NULL,
+    PRIMARY KEY (UsuarioID, ContatoID),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID) ON DELETE CASCADE,
+    FOREIGN KEY (ContatoID) REFERENCES Contato(ContatoID) ON DELETE CASCADE
+);
+
+-- Tabela Usuario_Mensagem (Relacionamento entre Usuario e Mensagem)
+CREATE TABLE Usuario_Mensagem (
+    UsuarioID INT NOT NULL,
+    MensagemID INT NOT NULL,
+    TipoRelacionamento VARCHAR(10) CHECK (TipoRelacionamento IN ('Enviada', 'Recebida')),
+    PRIMARY KEY (UsuarioID, MensagemID, TipoRelacionamento),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID) ON DELETE CASCADE,
+    FOREIGN KEY (MensagemID) REFERENCES Mensagem(MensagemID) ON DELETE CASCADE
+);

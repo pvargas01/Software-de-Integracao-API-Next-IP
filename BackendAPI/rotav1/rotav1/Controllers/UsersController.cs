@@ -29,7 +29,8 @@ public class UsersController : ControllerBase
         user.PasswordHash = HashPassword(user.PasswordHash);
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        return Ok(new { Message = "User registered successfully" });
+        var token = _tokenService.GenerateToken(user.Username, user.Role);
+        return Ok(new { Token = token });
     }
 
     [HttpPost("login")]
@@ -37,7 +38,6 @@ public class UsersController : ControllerBase
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Username == credentials.Username);
-        Console.WriteLine(user);
         if (user == null || !VerifyPassword(credentials.PasswordHash, user.PasswordHash))
             return Unauthorized();
 

@@ -27,6 +27,19 @@ namespace rotav1
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
+            // Configuração de CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFlutterApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:63520", "http://10.0.2.2:3000") // Flutter web / Emulador Android
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials(); // Permitir autenticação via token/cookies
+                });
+            });
+
+
             // Configurar autenticação JWT
             var secretKey = "your-very-long-and-very-secret-key"; // Use uma chave segura
             var key = Encoding.UTF8.GetBytes(secretKey);
@@ -45,6 +58,7 @@ namespace rotav1
                     };
                 });
 
+            
             services.AddAuthorization();
 
             // Registrar TokenService para injeção de dependências
@@ -62,6 +76,8 @@ namespace rotav1
             }
 
             app.UseRouting();
+
+            app.UseCors("AllowFlutterApp");
 
             app.UseAuthentication();
             app.UseAuthorization();

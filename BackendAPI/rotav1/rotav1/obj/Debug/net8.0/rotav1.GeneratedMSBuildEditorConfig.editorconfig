@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = rotav1
-build_property.ProjectDir = E:\UFMT - CC\SEMESTRE 3\Arquitetura de Computadores\Software API Next IP\rotav1\rotav1\
+build_property.ProjectDir = C:\Users\kevin\Documents\VisualStudio\arq\Software-de-Integracao-API-Next-IP\BackendAPI\rotav1\rotav1\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

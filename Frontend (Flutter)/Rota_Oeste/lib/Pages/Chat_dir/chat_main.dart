@@ -42,8 +42,8 @@ class _ChatPageState extends State<ChatMain> {
             theme: DefaultChatTheme(
               primaryColor: Colors.black,
               secondaryColor: Colors.grey[300]!,
-              inputBackgroundColor: Colors.black,
-              inputTextColor: Colors.white,
+              inputBackgroundColor: const Color.fromARGB(255, 239, 239, 239),
+              inputTextColor: const Color.fromARGB(255, 0, 0, 0),
               sentMessageBodyTextStyle: const TextStyle(
                 color: Colors.white,
               ),

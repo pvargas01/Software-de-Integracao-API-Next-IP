@@ -404,3 +404,4 @@ C:\Users\leand\OneDrive\Área de Trabalho\Projeto_RotaOeste\Software-de-Integrac
 C:\Users\leand\OneDrive\Área de Trabalho\Projeto_RotaOeste\Software-de-Integracao-API-Next-IP\Backend (C#)\rotav1\rotav1\obj\Debug\net8.0\rotav1.pdb
 C:\Users\leand\OneDrive\Área de Trabalho\Projeto_RotaOeste\Software-de-Integracao-API-Next-IP\Backend (C#)\rotav1\rotav1\obj\Debug\net8.0\rotav1.genruntimeconfig.cache
 C:\Users\leand\OneDrive\Área de Trabalho\Projeto_RotaOeste\Software-de-Integracao-API-Next-IP\Backend (C#)\rotav1\rotav1\obj\Debug\net8.0\ref\rotav1.dll
+C:\Users\leand\OneDrive\Área de Trabalho\Projeto_RotaOeste\Software-de-Integracao-API-Next-IP\Backend (C#)\rotav1\rotav1\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll

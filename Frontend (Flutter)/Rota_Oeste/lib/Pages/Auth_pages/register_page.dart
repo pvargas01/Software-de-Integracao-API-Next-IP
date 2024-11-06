@@ -11,6 +11,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Registro"),
@@ -106,9 +107,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'username': _nomeController.text,
-          'email': _emailController.text,
-          'password': _passwordController.text
+          'Nome': _nomeController.text,
+          'Email': _emailController.text,
+          'Senhahash': _passwordController.text
         }),
       );
       

@@ -27,7 +27,7 @@ class _UserProfileState extends State<UserProfile> {
       var response = await http.get(
         url,
         headers: {
-          'token': '$token',
+          'Authorization': 'Bearer $token',
           'Access-Control-Allow-Origin': '*',
         },
       );
@@ -35,9 +35,8 @@ class _UserProfileState extends State<UserProfile> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         setState(() {
-          userName = data['name'];
+          userName = data['nome'];
           userEmail = data['email'];
-          userUsername = data['username'];
         });
       } else {
         print('Erro ao obter dados do usuário: ${response.statusCode}');
@@ -80,17 +79,6 @@ class _UserProfileState extends State<UserProfile> {
             SizedBox(height: 8),
             Text(
               userEmail,
-              style: TextStyle(fontSize: 16),
-            ),
-            Divider(height: 20, thickness: 1),
-
-            Text(
-              'Username:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              userUsername,
               style: TextStyle(fontSize: 16),
             ),
             Divider(height: 20, thickness: 1),

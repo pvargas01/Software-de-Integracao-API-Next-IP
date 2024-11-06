@@ -10,6 +10,7 @@ class LoginPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Login"),
@@ -50,15 +51,25 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _submitForm() async {
-    await logar();
-    print("logou");
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login bem-sucedido!')),
+        SnackBar(content: Text('Enviando dados...')),
       );
-    }
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+      bool success = await logar();
+
+      if (success) {
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Falha ao logar. Tente novamente.')),
+        );
+      }
+    }
   }
 
   logar() async {
@@ -69,8 +80,9 @@ class _LoginFormState extends State<LoginForm> {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(
           {
-            'username': _emailController.text,
-            'password': _senhaController.text
+            'Nome': _nomeController.text,
+            'Email': _emailController.text,
+            'Senhahash':_senhaController.text
           }
         )
       );
@@ -78,7 +90,7 @@ class _LoginFormState extends State<LoginForm> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         String token = data['token'];
-
+        print(token);
         await storage.write(key: 'token', value: token);
 
         return true;
@@ -95,6 +107,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   final _emailController = TextEditingController();
+  final _nomeController = TextEditingController();
   final _senhaController = TextEditingController();
 
   @override
@@ -107,9 +120,14 @@ class _LoginFormState extends State<LoginForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
-              decoration: InputDecoration(labelText: 'Username'),
+              decoration: InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Nome'),
+              keyboardType: TextInputType.emailAddress,
+              controller: _nomeController,
             ),
             TextFormField(
               decoration: InputDecoration(labelText: 'Senha'),

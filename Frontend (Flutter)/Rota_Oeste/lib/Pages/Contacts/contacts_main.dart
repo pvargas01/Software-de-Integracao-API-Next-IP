@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'screens/contatos_screen.dart';
 
 class Contacts extends StatelessWidget {
-  const Contacts({super.key});
-
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-        appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Contatos',
-          style: TextStyle(fontSize: 30),
-        ),
+    return MaterialApp(
+      title: 'Contatos App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: ContatosScreen(),
     );
   }
 }

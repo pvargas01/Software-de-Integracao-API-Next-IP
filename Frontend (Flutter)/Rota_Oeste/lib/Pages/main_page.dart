@@ -29,30 +29,30 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: Text("Main Page")),
+      appBar: AppBar(title: Text("Rota Oeste")),
       body: _pages[selected_index],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selected_index,
         onTap: _navigateBottomBar,
         items: const [
-          // Usuário
+          
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: "Usuário"
           ),
 
-          // Chat
+          
           BottomNavigationBarItem(
               icon: Icon(Icons.chat),
               label: "Chats"
           ),
 
-          // Contatos
+          
           BottomNavigationBarItem(
               icon: Icon(Icons.contacts),
               label: "Contatos"
           )
-          //
+          
         ],
       ),
     );

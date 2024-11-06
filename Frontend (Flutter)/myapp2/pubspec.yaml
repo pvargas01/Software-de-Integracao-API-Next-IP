@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  signalr_netcore: ^1.0.0
   flutter:
     sdk: flutter
   http: ^0.13.3

@@ -24,25 +24,24 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(User user)
+    public async Task<IActionResult> Register(Usuario user)
     {
-        user.PasswordHash = HashPassword(user.PasswordHash);
-        _context.Users.Add(user);
+        user.Senhahash = HashPassword(user.Senhahash);
+        _context.Usuarios.Add(user);
         await _context.SaveChangesAsync();
-        var token = _tokenService.GenerateToken(user.Username, user.Role);
-        return Ok(new { token = token });
+        var token = _tokenService.GenerateToken(user.Nome, user.Role);
+        return Ok(new { Token = token });
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] User credentials)
+    public async Task<IActionResult> Login([FromBody] Usuario credentials)
     {
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Username == credentials.Username);
-        Console.WriteLine(user);
-        if (user == null || !VerifyPassword(credentials.PasswordHash, user.PasswordHash))
+        var user = await _context.Usuarios
+            .FirstOrDefaultAsync(u => u.Nome == credentials.Nome);
+        if (user == null || !VerifyPassword(credentials.Senhahash, user.Senhahash))
             return Unauthorized();
 
-        var token = _tokenService.GenerateToken(user.Username, user.Role);
+        var token = _tokenService.GenerateToken(user.Nome, user.Role);
         return Ok(new { Token = token });
     }
 
@@ -51,7 +50,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetMe()
     {
         var username = User.Identity?.Name;
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Nome == username);
         if (user == null) return NotFound();
         return Ok(user);
     }
@@ -63,7 +62,7 @@ public class UsersController : ControllerBase
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
         Console.WriteLine($"Role Claim: {roleClaim}");
 
-        var users = await _context.Users.ToListAsync();
+        var users = await _context.Usuarios.ToListAsync();
         return Ok(users);
     }
 
@@ -72,15 +71,15 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> DeleteUser(int id)
     {
         var username = User.Identity?.Name;
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context.Usuarios.FindAsync(id);
         Console.WriteLine(user);
 
         if (user == null) return NotFound();
 
-        if (user.Username != username && !User.IsInRole("Admin"))
+        if (user.Nome != username && !User.IsInRole("Admin"))
             return Forbid();
 
-        _context.Users.Remove(user);
+        _context.Usuarios.Remove(user);
         await _context.SaveChangesAsync();
         return NoContent();
     }

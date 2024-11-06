@@ -4463,27 +4463,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\leand\\.nuget\\packages\\": {}
+    "C:\\Users\\kevin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
+      "projectUniqueName": "C:\\Users\\kevin\\Documents\\VisualStudio\\arq\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
       "projectName": "rotav1",
-      "projectPath": "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
-      "packagesPath": "C:\\Users\\leand\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\obj\\",
+      "projectPath": "C:\\Users\\kevin\\Documents\\VisualStudio\\arq\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
+      "packagesPath": "C:\\Users\\kevin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kevin\\Documents\\VisualStudio\\arq\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\leand\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\kevin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

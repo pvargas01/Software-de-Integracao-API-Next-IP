@@ -4,17 +4,65 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
+import 'package:signalr_netcore/signalr_client.dart';
 
-class ChatMain extends StatefulWidget {
-  const ChatMain({super.key});
+
+
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
 
   @override
-  State<ChatMain> createState() => _ChatPageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatMain> {
+class _ChatPageState extends State<ChatPage> {
   final List<types.Message> _messages = [];
   final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
+  late HubConnection _connection;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeSignalR();
+  }
+
+  Future<void> _initializeSignalR() async {
+    _connection = HubConnectionBuilder()
+        .withUrl("LINK-NROK/chathub") // ALTERAR PARA LINK CORRETO
+        .build();
+
+    // Escute as mensagens recebidas
+    _connection.on("ReceiveMessage", (arguments) {
+      if (arguments != null && arguments.isNotEmpty) {
+        final message = arguments[0];
+
+        if (message is Map<String, dynamic> &&
+            message.containsKey('SenderId') &&
+            message.containsKey('MessageText')) {
+          final senderId = message['SenderId'];
+          final messageText = message['MessageText'];
+
+          _addMessage(types.TextMessage(
+            author: types.User(id: senderId),
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            text: messageText,
+          ));
+        } else {
+          print("Mensagem recebida não possui os campos necessários.");
+        }
+      } else {
+        print("Argumentos recebidos são nulos ou vazios.");
+      }
+    });
+
+    try {
+      await _connection.start();
+      print("Conexão com SignalR estabelecida!");
+    } catch (e) {
+      print("Erro ao conectar: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +70,7 @@ class _ChatPageState extends State<ChatMain> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Chat',
+          'Rota Oeste',
           style: TextStyle(fontSize: 30),
         ),
       ),
@@ -31,7 +79,7 @@ class _ChatPageState extends State<ChatMain> {
           if (_messages.isEmpty)
             const Center(
               child: Text(
-                'Chat',
+                'Rota Oeste',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
@@ -42,8 +90,8 @@ class _ChatPageState extends State<ChatMain> {
             theme: DefaultChatTheme(
               primaryColor: Colors.black,
               secondaryColor: Colors.grey[300]!,
-              inputBackgroundColor: const Color.fromARGB(255, 239, 239, 239),
-              inputTextColor: const Color.fromARGB(255, 0, 0, 0),
+              inputBackgroundColor: Colors.black,
+              inputTextColor: Colors.white,
               sentMessageBodyTextStyle: const TextStyle(
                 color: Colors.white,
               ),
@@ -58,7 +106,6 @@ class _ChatPageState extends State<ChatMain> {
   }
 
   void _handleSendPressed(types.PartialText message) async {
-    // Gera um ID único para a mensagem
     final messageId = DateTime.now().millisecondsSinceEpoch.toString() + Random().nextInt(1000).toString();
 
     final textMessage = types.TextMessage(
@@ -70,7 +117,8 @@ class _ChatPageState extends State<ChatMain> {
 
     _addMessage(textMessage);
 
-    await sendMessage("5565996220491", message.text); // Envia a mensagem digitada pelo usuário
+    // Enviar a mensagem
+    await sendMessage("5565996220491", message.text);
   }
 
   void _addMessage(types.Message message) {
@@ -80,10 +128,10 @@ class _ChatPageState extends State<ChatMain> {
   }
 
   Future<void> sendMessage(String to, String messageBody) async {
-    final url = Uri.parse('http://localhost:5000/api/whatsapp/send');
+    final url = Uri.parse('https://2a7a-200-129-242-4.ngrok-free.app/api/whatsapp/send'); // ALTERAR PARA LINK CORRETO
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer EAB7uOlnCeBEBO3i7F91ZATVpnpje0iJhsy7eFIKInJzRGmngORSvCZC6TrPykR74fCClfq5lBLZBEB7TanCORXJhXWfH325VN3ZAkJLrbr42NMG9N4Au3QOSRddwqZBGJukDIWhBpZAwolNHIvMAXK8PXTybgbd2fbPvEiVVOMdYrFuL17Hc3wNSwKnJDoG2FZAmShruYC4PMZAJ8ljCZAw9IrYR3gqpT',
+      'Authorization': 'Bearer EAB7uOlnCeBEBOzzpmC3eNZCXAwgOjz7ZA8B9E6ZCc2j18O27mz6uRezNOYvZA1WR6r9xPN2ErqTxcJWjF6ZAOsVTFjYy8sjdiZB690wEB5MAxA9AqCa6bxQIZBmlriU3D3EDC5CoRyWFOSUw2aDU20qR4PTfrgtAOETOxuDfWrwKJmrvRibW1HiGSuZAuSTRi3QbWB88Vi7xOX1lXZBIfYZB8ZAFz2qjtAZD',
     };
 
     final payload = {
@@ -102,6 +150,7 @@ class _ChatPageState extends State<ChatMain> {
         print('Mensagem enviada com sucesso!');
       } else {
         print('Falha ao enviar mensagem. Status: ${response.statusCode}');
+        print('Resposta: ${response.body}'); // Adicione essa linha para ver a resposta do servidor
       }
     } catch (e) {
       print('Erro: $e');

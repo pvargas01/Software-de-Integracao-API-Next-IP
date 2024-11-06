@@ -10,7 +10,7 @@ public class WhatsAppController : ControllerBase
     private readonly IHubContext<ChatHub> _hubContext;
 
     private const string PhoneNumberId = "472462449282510";
-    private const string AccessToken = "EAB7uOlnCeBEBOyAGZBeu4MhAvDGrZAKUoWDFMLqsdZBPvWntp8uYhTcODln60wZAtZCxaxXMTn6POvkSniLDiMcXdvsVgZAaWUpv29xlalC5dH86fYTRbRL1liQZCMNRGMrkScjuOhxnfyA3xIdsX4SKlo3UjJLvzerF9uQyFd8OVx6X80SbDANrSFU9iFxpDVhgHBiV7a7CchaMrrOMl4g1YH5tG8ZD"; 
+    private const string AccessToken = "EAB7uOlnCeBEBOzzpmC3eNZCXAwgOjz7ZA8B9E6ZCc2j18O27mz6uRezNOYvZA1WR6r9xPN2ErqTxcJWjF6ZAOsVTFjYy8sjdiZB690wEB5MAxA9AqCa6bxQIZBmlriU3D3EDC5CoRyWFOSUw2aDU20qR4PTfrgtAOETOxuDfWrwKJmrvRibW1HiGSuZAuSTRi3QbWB88Vi7xOX1lXZBIfYZB8ZAFz2qjtAZD"; 
     private const string VerifyToken = "pedro123";
 
     public WhatsAppController(IHubContext<ChatHub> hubContext)

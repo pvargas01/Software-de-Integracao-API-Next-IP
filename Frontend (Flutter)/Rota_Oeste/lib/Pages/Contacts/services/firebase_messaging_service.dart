@@ -1,5 +1,5 @@
 // lib/services/firebase_messaging_service.dart
-
+/*
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseMessagingService {
@@ -32,3 +32,4 @@ class FirebaseMessagingService {
     return await _messaging.getToken();
   }
 }
+*/

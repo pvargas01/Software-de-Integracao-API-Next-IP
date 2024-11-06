@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     UserProfile(),
-    ChatMain(),
+    ChatPage(),
     Contacts()
   ];
 

@@ -22,6 +22,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<UsuarioMensagem> UsuarioMensagems { get; set; }
 
+    public virtual DbSet<UsuarioContato> UsuarioContatos { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -142,6 +144,7 @@ public partial class AppDbContext : DbContext
                 .HasConstraintName("usuario_mensagem_usuarioid_fkey");
         });
 
+        
         OnModelCreatingPartial(modelBuilder);
     }
 

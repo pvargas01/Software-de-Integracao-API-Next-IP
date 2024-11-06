@@ -32,7 +32,7 @@ namespace rotav1
             {
                 options.AddPolicy("AllowFlutterApp", policy =>
                 {
-                    policy.WithOrigins("http://localhost:63520", "http://10.0.2.2:3000") // Flutter web / Emulador Android
+                    policy.WithOrigins("http://localhost:65053", "http://10.0.2.2:3000") // Flutter web / Emulador Android
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials(); // Permitir autenticação via token/cookies

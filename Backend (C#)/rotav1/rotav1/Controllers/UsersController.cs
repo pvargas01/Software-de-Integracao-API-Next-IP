@@ -29,7 +29,8 @@ public class UsersController : ControllerBase
         user.PasswordHash = HashPassword(user.PasswordHash);
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        return Ok(new { Message = "User registered successfully" });
+        var token = _tokenService.GenerateToken(user.Username, user.Role);
+        return Ok(new { token = token });
     }
 
     [HttpPost("login")]

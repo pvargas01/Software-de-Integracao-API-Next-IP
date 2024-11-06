@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("rotav1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7247f62729b6fb32243492c33fc370c8b4b4dc65")]
 [assembly: System.Reflection.AssemblyProductAttribute("rotav1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("rotav1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

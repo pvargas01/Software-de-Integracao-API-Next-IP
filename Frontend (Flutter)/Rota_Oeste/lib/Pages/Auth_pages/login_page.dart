@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:rota_oeste/Pages/Auth_pages/register_page.dart';
+import 'package:rota_oeste/Pages/main_page.dart';
 
 class LoginPage2 extends StatelessWidget {
   @override
@@ -22,6 +27,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  final storage = FlutterSecureStorage();
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -43,26 +49,49 @@ class _LoginFormState extends State<LoginForm> {
     return null;
   }
 
-  void _submitForm() {
-    logar();
+  void _submitForm() async {
+    await logar();
+    print("logou");
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login bem-sucedido!')),
       );
     }
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
   }
 
   logar() async {
-    var url = Uri.parse('');
-    var response = await http.post(
+    var url = Uri.parse('http://localhost:5000/api/users/login');
+    try {
+      var response = await http.post(
         url,
-        body:{
-          'username': _emailController.text,
-          'password': _senhaController.text
-        }
-    );
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(
+          {
+            'username': _emailController.text,
+            'password': _senhaController.text
+          }
+        )
+      );
 
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        String token = data['token'];
 
+        await storage.write(key: 'token', value: token);
+
+        return true;
+      } else {
+        print('Erro ao logar: ${response.body}');
+        return false;
+      }
+
+    } catch (e) {
+        print('Erro de conexão: $e');
+        return false;
+    }
+    
   }
 
   final _emailController = TextEditingController();
@@ -78,9 +107,8 @@ class _LoginFormState extends State<LoginForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: 'Username'),
               keyboardType: TextInputType.emailAddress,
-              validator: _validateEmail,
               controller: _emailController,
             ),
             TextFormField(
@@ -88,6 +116,15 @@ class _LoginFormState extends State<LoginForm> {
               obscureText: true,
               validator: _validatePassword,
               controller: _senhaController,
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                );
+              },
+              child: const Text('Não possui conta? Registre-se'),
             ),
             SizedBox(height: 20),
             ElevatedButton(

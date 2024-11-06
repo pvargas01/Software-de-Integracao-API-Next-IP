@@ -27,7 +27,8 @@ namespace rotav1
                 options.AddPolicy("AllowFlutterWeb",
                 builder =>
                 {
-                builder.AllowAnyOrigin()  // Ou defina a origem específica
+                builder.WithOrigins("http://localhost:65120", "*")
+                       .AllowAnyOrigin()  // Ou defina a origem específica
                        .AllowAnyMethod()
                        .AllowAnyHeader();
                 });

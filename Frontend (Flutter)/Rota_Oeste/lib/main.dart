@@ -4,6 +4,7 @@ import 'package:rota_oeste/Pages/Auth_pages/login_page.dart';
 import 'package:rota_oeste/Pages/Auth_pages/register_page.dart';
 import 'package:rota_oeste/Pages/main_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:rota_oeste/Pages/user_profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       return;
     }
 
-    final url = Uri.parse('https://seuservidor.com/validate-token'); // URL da API de validação
+    final url = Uri.parse(''); 
     final response = await http.post(
       url,
       headers: {
@@ -64,7 +65,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
-      home: autenticado ? MainPage() : LoginForm(),
+      home: autenticado ? MainPage() : RegisterPage(),
     );
   }
 }

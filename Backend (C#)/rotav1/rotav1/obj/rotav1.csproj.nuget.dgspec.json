@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aissa\\Desktop\\PASTA DO PEDRO\\UFMT\\Arq\\ARQ  - Trabalho Final\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj": {}
+    "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Aissa\\Desktop\\PASTA DO PEDRO\\UFMT\\Arq\\ARQ  - Trabalho Final\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj": {
+    "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aissa\\Desktop\\PASTA DO PEDRO\\UFMT\\Arq\\ARQ  - Trabalho Final\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
+        "projectUniqueName": "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
         "projectName": "rotav1",
-        "projectPath": "C:\\Users\\Aissa\\Desktop\\PASTA DO PEDRO\\UFMT\\Arq\\ARQ  - Trabalho Final\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
-        "packagesPath": "C:\\Users\\Aissa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aissa\\Desktop\\PASTA DO PEDRO\\UFMT\\Arq\\ARQ  - Trabalho Final\\Backend (C#)\\rotav1\\rotav1\\obj\\",
+        "projectPath": "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\rotav1.csproj",
+        "packagesPath": "C:\\Users\\leand\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\leand\\OneDrive\\Área de Trabalho\\Projeto_RotaOeste\\Software-de-Integracao-API-Next-IP\\Backend (C#)\\rotav1\\rotav1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Aissa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\leand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -59,7 +62,7 @@
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
-              "version": "[8.1.2, )"
+              "version": "[8.2.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -71,7 +74,7 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[8.1.2, )"
+              "version": "[8.2.0, )"
             }
           },
           "imports": [
@@ -93,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\Aissa\\.dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

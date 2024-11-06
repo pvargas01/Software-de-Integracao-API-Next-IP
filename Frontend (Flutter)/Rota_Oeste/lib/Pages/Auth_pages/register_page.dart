@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:rota_oeste/Pages/Auth_pages/login_page.dart';
+import 'package:rota_oeste/Pages/main_page.dart';
+import 'package:rota_oeste/main.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -29,6 +31,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
   final _nomeController = TextEditingController();
+  final storage = FlutterSecureStorage();
 
   @override
   void dispose() {
@@ -83,8 +86,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
       bool success = await registrar();
 
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registro bem-sucedido!')),
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -95,28 +100,28 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   Future<bool> registrar() async {
-    var url = Uri.parse('https://suaapi.com/registro');
+    var url = Uri.parse('http://localhost:5000/api/users/register');
     try {
       var response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'Nome': _nomeController.text,
-          'Email': _emailController.text,
-          'Password': _passwordController.text
+          'username': _nomeController.text,
+          'email': _emailController.text,
+          'password': _passwordController.text
         }),
       );
+      
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         String token = data['token'];
 
-        final storage = FlutterSecureStorage();
         await storage.write(key: 'token', value: token);
 
         return true;
       } else {
-        // Caso ocorra erro, você pode tratar ou exibir o corpo da resposta
+        
         print('Erro ao registrar: ${response.body}');
         return false;
       }
@@ -162,7 +167,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginForm()),
+                  MaterialPageRoute(builder: (context) => LoginPage2()),
                 );
               },
               child: const Text('Já tem uma conta? Faça login'),

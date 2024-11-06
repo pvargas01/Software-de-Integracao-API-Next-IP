@@ -15,10 +15,10 @@
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.1.2" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.2.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
     </ItemGroup>
 
 </Project>

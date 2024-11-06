@@ -7,7 +7,13 @@ class Contacts extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        appBar: AppBar(title: Text("Contacts"))
+        appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Contatos',
+          style: TextStyle(fontSize: 30),
+        ),
+      ),
     );
   }
 }

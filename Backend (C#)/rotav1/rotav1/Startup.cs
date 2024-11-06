@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +46,19 @@ namespace rotav1
             var connectionString = _configuration.GetConnectionString("PostgreSqlConnection");
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(connectionString));
+
+            // Configuração de CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFlutterApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:65053", "http://10.0.2.2:3000") // Flutter web / Emulador Android
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials(); // Permitir autenticação via token/cookies
+                });
+            });
+
 
             // Configurar autenticação JWT
             var secretKey = "your-very-long-and-very-secret-key"; // Use uma chave segura

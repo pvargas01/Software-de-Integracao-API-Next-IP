@@ -4,6 +4,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
+import 'package:signalr_netcore/signalr_client.dart';
 
 void main() => runApp(const MyApp());
 
@@ -29,6 +30,51 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final List<types.Message> _messages = [];
   final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
+  late HubConnection _connection;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeSignalR();
+  }
+
+  Future<void> _initializeSignalR() async {
+    _connection = HubConnectionBuilder()
+        .withUrl("LINK-NROK/chathub") // ALTERAR PARA LINK CORRETO
+        .build();
+
+    // Escute as mensagens recebidas
+    _connection.on("ReceiveMessage", (arguments) {
+      if (arguments != null && arguments.isNotEmpty) {
+        final message = arguments[0];
+
+        if (message is Map<String, dynamic> &&
+            message.containsKey('SenderId') &&
+            message.containsKey('MessageText')) {
+          final senderId = message['SenderId'];
+          final messageText = message['MessageText'];
+
+          _addMessage(types.TextMessage(
+            author: types.User(id: senderId),
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            text: messageText,
+          ));
+        } else {
+          print("Mensagem recebida não possui os campos necessários.");
+        }
+      } else {
+        print("Argumentos recebidos são nulos ou vazios.");
+      }
+    });
+
+    try {
+      await _connection.start();
+      print("Conexão com SignalR estabelecida!");
+    } catch (e) {
+      print("Erro ao conectar: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +118,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleSendPressed(types.PartialText message) async {
-    // Gera um ID único para a mensagem
     final messageId = DateTime.now().millisecondsSinceEpoch.toString() + Random().nextInt(1000).toString();
 
     final textMessage = types.TextMessage(
@@ -84,7 +129,8 @@ class _ChatPageState extends State<ChatPage> {
 
     _addMessage(textMessage);
 
-    await sendMessage("5565996220491", message.text); // Envia a mensagem digitada pelo usuário
+    // Enviar a mensagem
+    await sendMessage("5565996220491", message.text);
   }
 
   void _addMessage(types.Message message) {
@@ -94,10 +140,10 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendMessage(String to, String messageBody) async {
-    final url = Uri.parse('http://localhost:5000/api/whatsapp/send');
+    final url = Uri.parse('LINK-NGROK/api/whatsapp/send'); // ALTERAR PARA LINK CORRETO
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer EAB7uOlnCeBEBO3i7F91ZATVpnpje0iJhsy7eFIKInJzRGmngORSvCZC6TrPykR74fCClfq5lBLZBEB7TanCORXJhXWfH325VN3ZAkJLrbr42NMG9N4Au3QOSRddwqZBGJukDIWhBpZAwolNHIvMAXK8PXTybgbd2fbPvEiVVOMdYrFuL17Hc3wNSwKnJDoG2FZAmShruYC4PMZAJ8ljCZAw9IrYR3gqpT',
+      'Authorization': 'Bearer EAB7uOlnCeBEBOyAGZBeu4MhAvDGrZAKUoWDFMLqsdZBPvWntp8uYhTcODln60wZAtZCxaxXMTn6POvkSniLDiMcXdvsVgZAaWUpv29xlalC5dH86fYTRbRL1liQZCMNRGMrkScjuOhxnfyA3xIdsX4SKlo3UjJLvzerF9uQyFd8OVx6X80SbDANrSFU9iFxpDVhgHBiV7a7CchaMrrOMl4g1YH5tG8ZD',
     };
 
     final payload = {
@@ -116,6 +162,7 @@ class _ChatPageState extends State<ChatPage> {
         print('Mensagem enviada com sucesso!');
       } else {
         print('Falha ao enviar mensagem. Status: ${response.statusCode}');
+        print('Resposta: ${response.body}'); // Adicione essa linha para ver a resposta do servidor
       }
     } catch (e) {
       print('Erro: $e');

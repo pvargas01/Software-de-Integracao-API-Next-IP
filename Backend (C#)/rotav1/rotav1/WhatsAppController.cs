@@ -1,19 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 
 [Route("api/[controller]")]
 [ApiController]
 public class WhatsAppController : ControllerBase
 {
     private readonly WhatsAppApiClient _whatsAppApiClient;
-    private const string PhoneNumberId = "472462449282510";
-    private const string AccessToken = "EAB7uOlnCeBEBO61PTM6I2nZALs3ZB2zZBCaeRl32Qaurk3RFewFWkVjQ0Nk7t76SndbSwNg3zhB3urT4lf0doPSbgPa7shgXyxNjlw6hAZBu56JjAJ51vZBH1xAQgMiBOePPKpkzkSTLUEfi1SnpwkDKcpMHE0em7jCEZCeMij6tTqg0I6zcZAKLWS7ZAR6Ct1DLxVM9F5QS0iSZC165NB5nu3dyXZAxUZD"; // Substitua pelo seu token de acesso
+    private readonly IHubContext<ChatHub> _hubContext;
 
-    public WhatsAppController()
+    private const string PhoneNumberId = "472462449282510";
+    private const string AccessToken = "EAB7uOlnCeBEBOyAGZBeu4MhAvDGrZAKUoWDFMLqsdZBPvWntp8uYhTcODln60wZAtZCxaxXMTn6POvkSniLDiMcXdvsVgZAaWUpv29xlalC5dH86fYTRbRL1liQZCMNRGMrkScjuOhxnfyA3xIdsX4SKlo3UjJLvzerF9uQyFd8OVx6X80SbDANrSFU9iFxpDVhgHBiV7a7CchaMrrOMl4g1YH5tG8ZD"; 
+    private const string VerifyToken = "pedro123";
+
+    public WhatsAppController(IHubContext<ChatHub> hubContext)
     {
+        _hubContext = hubContext;
         _whatsAppApiClient = new WhatsAppApiClient(AccessToken);
     }
 
+    // Método para verificar o webhook
+    [HttpGet("webhook")]
+    public IActionResult VerifyWebhook([FromQuery] WebhookVerification verification)
+    {
+        // Verifica parâmetros
+        Console.WriteLine($"hubMode: {verification.HubMode}");
+        Console.WriteLine($"hubChallenge: {verification.HubChallenge}");
+        Console.WriteLine($"hubVerifyToken: {verification.HubVerifyToken}");
+    
+        if (verification.HubVerifyToken == VerifyToken)
+        {
+            return Ok(verification.HubChallenge);
+        }
+        else
+        {
+            Console.WriteLine("Token de verificação inválido");
+            return Unauthorized();
+        }
+    }
+
+    // Método para enviar mensagens
     [HttpPost("send")]
     public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request)
     {
@@ -29,43 +55,51 @@ public class WhatsAppController : ControllerBase
         }
         catch (HttpRequestException ex)
         {
+            Console.WriteLine($"Erro ao enviar mensagem: {ex.Message}");
             return BadRequest($"Erro ao enviar mensagem: {ex.Message}");
         }
     }
+
+    // Método para receber mensagens
     [HttpPost("receive")]
     public async Task<IActionResult> ReceiveMessage([FromBody] WhatsAppMessageRequest request)
     {
-        // Verifica se a requisição tem mensagens
         if (request != null && request.Entry != null)
         {
             foreach (var entry in request.Entry)
             {
                 foreach (var messaging in entry.Messaging)
                 {
-                    // acessar o texto da mensagem recebida
                     var messageText = messaging.Message.Text;
                     var senderId = messaging.Sender.Id;
 
-                    //  processar a mensagem ou enviar para o frontend
-                    // enviar pro frontend (nao implementado ainda)
+                    // Envia a mensagem recebida ao frontend usando SignalR
                     await SendToFrontend(senderId, messageText);
                 }
             }
+            return Ok("Mensagem recebida com sucesso!");
         }
-        return Ok("Mensagem recebida com sucesso!");
-    }
-    
-    // PRECISA IMPLEMENTAR AINDA// PRECISA IMPLEMENTAR AINDA// PRECISA IMPLEMENTAR AINDA
-    private Task SendToFrontend(string senderId, string messageText) // PRECISA IMPLEMENTAR AINDA
-    {
-       
-        Console.WriteLine($"Mensagem de {senderId}: {messageText}");
-        return Task.CompletedTask;
-    }
-    // PRECISA IMPLEMENTAR AINDA// PRECISA IMPLEMENTAR AINDA// PRECISA IMPLEMENTAR AINDA
 
+        Console.WriteLine("Requisição de mensagem recebida inválida.");
+        return BadRequest("Requisição inválida.");
+    }
+
+    // Método para enviar mensagens para o frontend usando SignalR
+    private async Task SendToFrontend(string senderId, string messageText)
+    {
+        var message = new
+        {
+            SenderId = senderId,
+            MessageText = messageText
+        };
+
+        // Envia a mensagem para todos os clientes conectados ao SignalR
+        await _hubContext.Clients.All.SendAsync("ReceiveMessage", message);
+    }
 }
 
+
+// Classes auxiliares para o corpo da requisição
 public class SendMessageRequest
 {
     public string To { get; set; }
@@ -98,3 +132,20 @@ public class WhatsAppMessage
 {
     public string Text { get; set; }
 }
+
+// Classe para capturar os parâmetros do webhook
+public class WebhookVerification
+{
+    [FromQuery(Name = "hub.mode")]
+    public string HubMode { get; set; }
+
+    [FromQuery(Name = "hub.challenge")]
+    public string HubChallenge { get; set; }
+
+    [FromQuery(Name = "hub.verify_token")]
+    public string HubVerifyToken { get; set; }
+}
+
+
+
+

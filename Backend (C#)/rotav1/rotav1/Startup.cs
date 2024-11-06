@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
+using System;
+
 namespace rotav1
 {
     public class Startup
@@ -20,20 +22,26 @@ namespace rotav1
         {
             _configuration = configuration;
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
-                services.AddCors(options =>
+            // Configuração de CORS para permitir requisições da origem Flutter
+            services.AddCors(options =>
             {
-                options.AddPolicy("AllowFlutterWeb",
-                builder =>
+                options.AddPolicy("AllowFlutterWeb", builder =>
                 {
-                builder.AllowAnyOrigin()  // Ou defina a origem específica
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
                 });
             });
 
-                services.AddControllers();
+            // Adicionar SignalR para comunicação em tempo real
+            services.AddSignalR();
+
+            // Adicionar controladores
+            services.AddControllers();
+
             // Configurar o banco de dados PostgreSQL
             var connectionString = _configuration.GetConnectionString("PostgreSqlConnection");
             services.AddDbContext<AppDbContext>(options =>
@@ -61,32 +69,31 @@ namespace rotav1
 
             // Registrar TokenService para injeção de dependências
             services.AddSingleton<TokenService>();
-
-            // Adicionar controladores
-            services.AddControllers();
         }
+
         // Configuração do pipeline de middleware
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("AllowFlutterWeb");
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-            endpoints.MapControllers();
-            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            // Configurar CORS para todas as requisições
+            app.UseCors("AllowFlutterWeb");
+
+            // Configurar o roteamento
             app.UseRouting();
 
+            // Autenticação e autorização
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Configurar os endpoints
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }

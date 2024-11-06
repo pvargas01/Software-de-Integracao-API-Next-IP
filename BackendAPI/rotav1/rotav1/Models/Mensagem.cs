@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace rotav1;
+namespace rotav1.Models;
 
 public partial class Mensagem
 {

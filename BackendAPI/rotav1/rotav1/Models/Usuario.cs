@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace rotav1;
+namespace rotav1.Models;
 
 public partial class Usuario
 {
@@ -12,6 +12,8 @@ public partial class Usuario
     public string Email { get; set; } = null!;
 
     public string Senhahash { get; set; } = null!;
+
+    public string Role { get; set; } = "User";  // "User" ou "Admin"
 
     public virtual ICollection<Contato> Contatos { get; set; } = new List<Contato>();
 

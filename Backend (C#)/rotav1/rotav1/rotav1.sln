@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rotav1", "rotav1.csproj", "{7DF35D44-6F03-4277-8D21-B6C9C1911ED9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7DF35D44-6F03-4277-8D21-B6C9C1911ED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DF35D44-6F03-4277-8D21-B6C9C1911ED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DF35D44-6F03-4277-8D21-B6C9C1911ED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DF35D44-6F03-4277-8D21-B6C9C1911ED9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EFEB0E60-D652-41C0-8C31-781351DF9F2D}
+	EndGlobalSection
+EndGlobal

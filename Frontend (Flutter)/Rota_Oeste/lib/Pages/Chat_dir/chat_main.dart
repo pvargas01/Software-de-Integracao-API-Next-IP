@@ -128,10 +128,10 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendMessage(String to, String messageBody) async {
-    final url = Uri.parse('https://2a7a-200-129-242-4.ngrok-free.app/api/whatsapp/send'); // ALTERAR PARA LINK CORRETO
+    final url = Uri.parse('link-NGROK'); // ALTERAR PARA LINK CORRETO
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer EAB7uOlnCeBEBOzzpmC3eNZCXAwgOjz7ZA8B9E6ZCc2j18O27mz6uRezNOYvZA1WR6r9xPN2ErqTxcJWjF6ZAOsVTFjYy8sjdiZB690wEB5MAxA9AqCa6bxQIZBmlriU3D3EDC5CoRyWFOSUw2aDU20qR4PTfrgtAOETOxuDfWrwKJmrvRibW1HiGSuZAuSTRi3QbWB88Vi7xOX1lXZBIfYZB8ZAFz2qjtAZD',
+      'Authorization': 'Bearer tokenDeAcesso',
     };
 
     final payload = {
